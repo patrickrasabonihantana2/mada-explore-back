@@ -1,32 +1,20 @@
 const colletion = {
-  name: 'sitetouristique',
+  name: 'commentaire',
   options: {
     validator: {
       $jsonSchema: {
         bsonType: 'object',
-        title: 'Collection SiteTouristique',
-        required: ['nom', 'localisation', 'description','types','categories','saisons','recommendations','photo','video','etat'],
+        title: 'Collection Commentaire',
+        required: ['id_user', 'id_parent', 'message','photo','video','note','date_modification','etat'],
         properties: {
-          nom: {
-            bsonType: "string"
+          id_user: {
+            bsonType: "objectId"
           },
-          localisation: {
-            bsonType: "string"
+          id_parent: {
+            bsonType: "objectId"
           },
-          description: {
+          message: {
             bsonType: "string",
-          },
-          types: {
-            bsonType: "string"
-          },
-          categories: {
-            bsonType: "string"
-          },
-          saisons: {
-            bsonType: "string"
-          },
-          recommendations: {
-            bsonType: "string"
           },
           photo: {
             bsonType: "object",
@@ -52,23 +40,19 @@ const colletion = {
               }
             }
           },
+          note: {
+            bsonType: "int"
+          },
+          date_modification: {
+            bsonType: "date"
+          },
           etat: {
             bsonType: "int"
           }
         }
       }
     }
-  },
-  indexes: [
-    {
-      indexInfo:{ "types": 1 },
-    },
-    {
-      indexInfo:{ "categories": 1}
-    },    {
-      indexInfo:{ "types": 1, "categories": 1}
-    }
-  ]
+  }
 }
 
 module.exports = colletion;

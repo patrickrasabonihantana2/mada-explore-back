@@ -1,14 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-// const voitureRouter = require('./voiture');
-// const depenseRouter = require('./depense');
-// const statistiqueRouter = require('./statistique');
+
 const utilisateurRouter = require('./utilisateur');
+const siteTouristiqueRouter=require('./site-touristique');
+const sitefavorisRouter=require('./site-favoris');
+const commentaireRouter=require('./commentaire');
 
 router.use('/utilisateur', utilisateurRouter);
-// router.use('/voiture', voitureRouter);
-// router.use('/depense', depenseRouter);
-// router.use('/statistique', statistiqueRouter);
+router.use('/site', siteTouristiqueRouter);
+router.use('/favoris', sitefavorisRouter);
+router.use('/commentaire', commentaireRouter);
 
 module.exports = router;

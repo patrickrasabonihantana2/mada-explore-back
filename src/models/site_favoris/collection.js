@@ -5,31 +5,13 @@ const colletion = {
       $jsonSchema: {
         bsonType: 'object',
         title: 'Collection SiteFavoris',
-        required: ['nom', 'localisation', 'description','types','categories','saisons','recommendations','medias','etat'],
+        required: ['id_site_touristique', 'id_user','etat'],
         properties: {
-          nom: {
-            bsonType: "string"
+          id_site_touristique: {
+            bsonType: "objectId"
           },
-          localisation: {
-            bsonType: "string"
-          },
-          description: {
-            bsonType: "string",
-          },
-          types: {
-            bsonType: "string"
-          },
-          categories: {
-            bsonType: "string"
-          },
-          saisons: {
-            bsonType: "string"
-          },
-          recommendations: {
-            bsonType: "string"
-          },
-          medias: {
-            bsonType: "string"
+          id_user: {
+            bsonType: "objectId"
           },
           etat: {
             bsonType: "int"

@@ -1,15 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const {ObjectId} = require('mongodb');
-const Utilisateur=require('../../../models/utilisateurs/utilisateur')
-const UtilisateurService = require('../../../services/utilisateur-service');
+const SiteTouristiqueService = require('../../../services/site-touristique-service');
 
 router.get('/', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let utilisateur = await UtilisateurService.findAll();
+    let site_touristique = await SiteTouristiqueService.findAll();
     let data = {
-      utilisateurs: [utilisateur]
+      site_touristiques: [site_touristique]
     };
     res.send(data);
   } catch(err) {
@@ -17,7 +16,7 @@ router.get('/', async function(req, res) {
     let data = {};
     if(err instanceof BSONTypeError) {
       if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'utilisateur inexistant';
+        data.message = 'site_touristique inexistant';
       }
     } else {
       data.message = err.message;
@@ -29,9 +28,9 @@ router.get('/', async function(req, res) {
 router.get('/:id', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let utilisateur = await UtilisateurService.findById(id);
+    let site_touristique = await SiteTouristiqueService.findById(id);
     let data = {
-      utilisateurs: [utilisateur]
+      site_touristiques: [site_touristique]
     };
     res.status(200).send(data);
   } catch(err) {
@@ -39,7 +38,7 @@ router.get('/:id', async function(req, res) {
     let data = {};
     if(err instanceof BSONTypeError) {
       if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'utilisateur inexistant';
+        data.message = 'site_touristique inexistant';
       }
     } else {
       data.message = err.message;
@@ -51,10 +50,10 @@ router.get('/:id', async function(req, res) {
 router.put('/:id', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let user = new Utilisateur(req.body.id_role,req.body.nom,req.body.prenom,req.body.login,req.body.etat);
-    let utilisateur =await UtilisateurService.update(id,user);
+    let site = new site_touristique(req.body.id_role,req.body.nom,req.body.prenom,req.body.login,req.body.etat);
+    let site_touristique =await SiteTouristiqueService.update(id,site);
     let data = {
-      utilisateurs: [utilisateur]
+      site_touristiques: [site_touristique]
     };
     res.status(200).send(data);
   } catch(err) {
@@ -62,7 +61,7 @@ router.put('/:id', async function(req, res) {
     let data = {};
     if(err instanceof BSONTypeError) {
       if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'utilisateur inexistant';
+        data.message = 'site_touristique inexistant';
       }
     } else {
       data.message = err.message;

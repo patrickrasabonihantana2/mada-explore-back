@@ -1,8 +1,7 @@
 const {Db, MongoError} = require('mongodb');
-const UtilisateurLogin = require('./utilisateur-login');
 
 class SiteTouristique {
-  constructor(nom,localisation,description,types,categories,saisons,recommendations,medias,etat) {
+  constructor(nom,localisation,description,types,categories,saisons,recommendations,etat) {
     this.nom = nom;
     this.localisation = localisation;
     this.description = description;
@@ -10,7 +9,8 @@ class SiteTouristique {
     this.categories = categories;
     this.saisons = saisons;
     this.recommendations = recommendations;
-    this.medias = medias;
+    this.photo = undefined;
+    this.video=undefined;
     this.etat = etat;
   }
 

@@ -1,16 +1,16 @@
 const jwt = require('jsonwebtoken');
 const MongoConnect = require('../dao/MongoConnect');
 const Env = require('../util/env');
-const {SiteTouristique} = require('../models/site_touristique');
+const {Commentaire} = require('../models/site_touristique');
 
-class SiteTouristiqueService {
+class CommentaireService {
   /**
    * cree un nouveau site
    * @param {Db} db database
-   * @return {SiteTouristique}
+   * @return {Commentaire}
    */
   async save(site_touristique) {
-    let colletion = db.collection('sitetouristique');
+    let colletion = db.collection('Commentaire');
     try {
       // await site.login.hashMdp();
       let result = await colletion.insertOne(site_touristique);
@@ -32,7 +32,7 @@ class SiteTouristiqueService {
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('sitetouristique');
+      let collection = db.collection('Commentaire');
 
       let query = {
         _id: id
@@ -51,7 +51,7 @@ class SiteTouristiqueService {
 
       /**
    * getall sites
-   * @return {SiteTouristique[]}
+   * @return {Commentaire[]}
    */
     static async findAll() {
         const mongoConnect = new MongoConnect();
@@ -59,7 +59,7 @@ class SiteTouristiqueService {
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('sitetouristique');
+          let collection = db.collection('Commentaire');
           let result = collection.find().toArray();
           return result;
         } catch(err) {
@@ -77,27 +77,24 @@ class SiteTouristiqueService {
     /**
      * met a jour un nouveau site par son id
      * @param {String} id
-     * @return {SiteTouristique}
+     * @return {Commentaire}
      */
-    static async update(id,site) {
+    static async update(id,comment) {
         const mongoConnect = new MongoConnect();
         let mongoClient = undefined;
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('sitetouristique');
+          let collection = db.collection('Commentaire');
           const filter = { _id:new mongodb.ObjectId(id) };
-          // update the value of the 'quantity' field to 5
           const updateDocument = {
             $set: {
-                nom:site.nom,
-                localisation:site.localisation,
-                description:site.description,
-                types:site.types,
-                categories:site.categories,
-                saisons:site.saisons,
-                recommendations:site.recommendations,
-                etat:site.etat
+              id_user:comment.id_user,
+              id_parent:comment.id_parent,
+              message:comment.message,
+              note:comment.note,
+              date_modification:comment.date_modification,
+              etat:comment.etat
             },
           };
           const result = await collection.updateOne(filter, updateDocument);
@@ -114,4 +111,4 @@ class SiteTouristiqueService {
       }
 }
 
-module.exports = SiteTouristiqueService;
+module.exports = CommentaireService;

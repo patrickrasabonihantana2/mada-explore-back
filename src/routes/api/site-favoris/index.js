@@ -1,15 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const {ObjectId} = require('mongodb');
-const Utilisateur=require('../../../models/utilisateurs/utilisateur')
-const UtilisateurService = require('../../../services/utilisateur-service');
+const SiteFavorisService = require('../../../services/site-favoris-service');
 
 router.get('/', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let utilisateur = await UtilisateurService.findAll();
+    let site_favoris = await SiteFavorisService.findAll();
     let data = {
-      utilisateurs: [utilisateur]
+      site_favoris: [site_favoris]
     };
     res.send(data);
   } catch(err) {
@@ -17,7 +16,7 @@ router.get('/', async function(req, res) {
     let data = {};
     if(err instanceof BSONTypeError) {
       if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'utilisateur inexistant';
+        data.message = 'site_favoris inexistant';
       }
     } else {
       data.message = err.message;
@@ -29,9 +28,9 @@ router.get('/', async function(req, res) {
 router.get('/:id', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let utilisateur = await UtilisateurService.findById(id);
+    let site_favoris = await SiteFavorisService.findById(id);
     let data = {
-      utilisateurs: [utilisateur]
+      site_favoris: [site_favoris]
     };
     res.status(200).send(data);
   } catch(err) {
@@ -39,7 +38,7 @@ router.get('/:id', async function(req, res) {
     let data = {};
     if(err instanceof BSONTypeError) {
       if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'utilisateur inexistant';
+        data.message = 'site_favoris inexistant';
       }
     } else {
       data.message = err.message;
@@ -51,10 +50,10 @@ router.get('/:id', async function(req, res) {
 router.put('/:id', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let user = new Utilisateur(req.body.id_role,req.body.nom,req.body.prenom,req.body.login,req.body.etat);
-    let utilisateur =await UtilisateurService.update(id,user);
+    let site = new site_favoris(req.body.id_site_touristique,req.body.id_user,req.body.etat);
+    let site_favoris =await SiteFavorisService.update(id,site);
     let data = {
-      utilisateurs: [utilisateur]
+      site_favoris: [site_favoris]
     };
     res.status(200).send(data);
   } catch(err) {
@@ -62,7 +61,7 @@ router.put('/:id', async function(req, res) {
     let data = {};
     if(err instanceof BSONTypeError) {
       if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'utilisateur inexistant';
+        data.message = 'site_favoris inexistant';
       }
     } else {
       data.message = err.message;
