@@ -5,7 +5,7 @@ const colletion = {
       $jsonSchema: {
         bsonType: 'object',
         title: 'Collection SiteTouristique',
-        required: ['nom', 'localisation', 'description','types','categories','saisons','recommendations','photo','video','etat'],
+        required: ['nom', 'localisation', 'description','types','categories','saisons','recommendations','etat'],
         properties: {
           nom: {
             bsonType: "string"
@@ -27,30 +27,6 @@ const colletion = {
           },
           recommendations: {
             bsonType: "string"
-          },
-          photo: {
-            bsonType: "object",
-            required: ['nom', 'stockage'],
-            properties: {
-              nom: {
-                bsonType: "string"
-              },
-              stockage: {
-                bsonType: "binData"
-              }
-            }
-          },
-          video: {
-            bsonType: "object",
-            required: ['nom', 'stockage'],
-            properties: {
-              nom: {
-                bsonType: "string"
-              },
-              stockage: {
-                bsonType: "binData"
-              }
-            }
           },
           etat: {
             bsonType: "int"

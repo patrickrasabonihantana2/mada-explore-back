@@ -9,8 +9,6 @@ class SiteTouristique {
     this.categories = categories;
     this.saisons = saisons;
     this.recommendations = recommendations;
-    this.photo = undefined;
-    this.video=undefined;
     this.etat = etat;
   }
 

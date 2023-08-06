@@ -50,7 +50,8 @@ router.get('/:id', async function(req, res) {
 router.put('/:id', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
-    let site = new site_touristique(req.body.id_role,req.body.nom,req.body.prenom,req.body.login,req.body.etat);
+    let body=req.body;
+    let site = new site_touristique(body.nom,body.localisation,body.description,body.types,body.categories,body.saisons,body.recommendations,body.etat);
     let site_touristique =await SiteTouristiqueService.update(id,site);
     let data = {
       site_touristiques: [site_touristique]
