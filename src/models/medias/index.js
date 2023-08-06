@@ -1,7 +1,7 @@
 const collection = require('./collection');
-const SiteFavoris = require('./site_favoris');
+const Media = require('./media');
 
 module.exports = {
   collection,
-  SiteFavoris
+  Media
 };
