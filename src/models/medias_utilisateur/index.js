@@ -1,7 +1,7 @@
 const collection = require('./collection');
-const SiteTouristique = require('./sitetouristique');
+const MediasUtilisateur = require('./medias-utilisateur');
 
 module.exports = {
   collection,
-  SiteTouristique
+  MediasUtilisateur
 };

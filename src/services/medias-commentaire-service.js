@@ -1,23 +1,23 @@
 const jwt = require('jsonwebtoken');
 const MongoConnect = require('../dao/MongoConnect');
 const Env = require('../util/env');
-const {SiteTouristique} = require('../models/site_touristique');
+const {MediasCommentaire} = require('../models/medias_commentaire');
 
-class SiteTouristiqueService {
+class MediasCommentaireService {
   /**
-   * cree un nouveau site
+   * cree un nouveau commentaire favoris
    * @param {Db} db database
-   * @return {SiteTouristique}
+   * @return {MediasCommentaire}
    */
-  static async save(site_touristique) {
+  static async save(media) {
     const mongoConnect = new MongoConnect();
     let mongoClient = undefined;
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('sitetouristique');
-      let result = await collection.insertOne(site_touristique);
-      return site_touristique;
+      let collection = db.collection('medias_commentaire');
+      let result = await collection.insertOne(media);
+      return media;
     } catch(err) {
       console.error(err);
       throw err;
@@ -25,9 +25,9 @@ class SiteTouristiqueService {
   }
 
   /**
-   * recupere un site par l'ID
+   * recupere un medias par l'ID
    * @param {ObjectId} id
-   * @return site
+   * @return medias
    */
   static async findById(id) {
     const mongoConnect = new MongoConnect();
@@ -35,14 +35,14 @@ class SiteTouristiqueService {
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('sitetouristique');
+      let collection = db.collection('medias_commentaire');
 
       let query = {
         _id: id
       };
 
-      let sites_touristiques = await collection.find(query).toArray();
-      return sites_touristiques[0];
+      let medias = await collection.find(query).toArray();
+      return medias[0];
     } catch(err) {
       throw err;
     } finally {
@@ -53,8 +53,8 @@ class SiteTouristiqueService {
   }
 
       /**
-   * getall sites
-   * @return {SiteTouristique[]}
+   * getall mediass
+   * @return {MediasCommentaire[]}
    */
     static async findAll() {
         const mongoConnect = new MongoConnect();
@@ -62,14 +62,14 @@ class SiteTouristiqueService {
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('sitetouristique');
+          let collection = db.collection('medias_commentaire');
           let result = collection.find().toArray();
           return result;
         } catch(err) {
           console.error(err);
           if(err instanceof MongoError) {
             if(err.code = 11000) {
-              throw new Error('La liste des sites_touristiques est vide');
+              throw new Error('La liste des medias_commentaire est vide');
             }
           }
           throw err;
@@ -78,29 +78,22 @@ class SiteTouristiqueService {
 
 
     /**
-     * met a jour un nouveau site par son id
+     * met a jour un nouveau medias par son id
      * @param {String} id
-     * @return {SiteTouristique}
+     * @return {MediasCommentaire}
      */
-    static async update(id,site) {
+    static async update(id,medias) {
         const mongoConnect = new MongoConnect();
         let mongoClient = undefined;
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('sitetouristique');
-          const filter = { _id: id };
-          // update the value of the 'quantity' field to 5
+          let collection = db.collection('medias_commentaire');
+          const filter = { _id:new mongodb.ObjectId(id) };
           const updateDocument = {
             $set: {
-                nom:site.nom,
-                localisation:site.localisation,
-                description:site.description,
-                types:site.types,
-                categories:site.categories,
-                saisons:site.saisons,
-                recommendations:site.recommendations,
-                etat:site.etat
+                id_commentaire:medias.id_commentaire,
+                id_media:medias.id_user,
             },
           };
           const result = await collection.updateOne(filter, updateDocument);
@@ -109,7 +102,7 @@ class SiteTouristiqueService {
           console.error(err);
           if(err instanceof MongoError) {
             if(err.code = 11000) {
-              throw new Error('La liste des sites_touristiques est vide');
+              throw new Error('La liste des medias est vide');
             }
           }
           throw err;
@@ -117,4 +110,4 @@ class SiteTouristiqueService {
       }
 }
 
-module.exports = SiteTouristiqueService;
+module.exports = MediasCommentaireService;

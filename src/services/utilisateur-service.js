@@ -130,14 +130,14 @@ class UtilisateurService {
      * @param {Utilisateur} user
      * @return {Utilisateur}
      */
-    static async update(user) {
+    static async update(id,user) {
         const mongoConnect = new MongoConnect();
         let mongoClient = undefined;
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
           let collection = db.collection('utilisateurs');
-          const filter = { _id:user.id };
+          const filter = { _id: id };
           // update the value of the 'quantity' field to 5
           const updateDocument = {
             $set: {
@@ -148,16 +148,13 @@ class UtilisateurService {
                   email:user.login.email,
                   mdp:user.login.mdp
                 },
-                // preference:{
-                //   categorie:user.preference.categorie,
-                //   nom:user.preference.nom,
-                //   valeur:user.preference.valeur
-                // },
                 etat:user.etat
             },
           };
           console.log(updateDocument);
-          const result = await collection.updateOne(filter, updateDocument);
+          const result = await collection.updateOne(filter, updateDocument,function () {
+            console.log('Success updated!')
+          });
           return result;
         } catch(err) {
           console.error(err);

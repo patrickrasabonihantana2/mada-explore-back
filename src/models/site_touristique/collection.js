@@ -5,7 +5,7 @@ const colletion = {
       $jsonSchema: {
         bsonType: 'object',
         title: 'Collection SiteTouristique',
-        required: ['nom', 'localisation', 'description','types','categories','saisons','recommendations','medias','etat'],
+        required: ['nom', 'localisation', 'description','types','categories','saisons','recommendations','etat'],
         properties: {
           nom: {
             bsonType: "string"
@@ -28,16 +28,23 @@ const colletion = {
           recommendations: {
             bsonType: "string"
           },
-          medias: {
-            bsonType: "string"
-          },
           etat: {
             bsonType: "int"
           }
         }
       }
     }
-  }
+  },
+  indexes: [
+    {
+      indexInfo:{ "types": 1 },
+    },
+    {
+      indexInfo:{ "categories": 1}
+    },    {
+      indexInfo:{ "types": 1, "categories": 1}
+    }
+  ]
 }
 
 module.exports = colletion;

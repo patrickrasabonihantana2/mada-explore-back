@@ -1,23 +1,23 @@
 const jwt = require('jsonwebtoken');
 const MongoConnect = require('../dao/MongoConnect');
 const Env = require('../util/env');
-const {SiteTouristique} = require('../models/site_touristique');
+const {Commentaire} = require('../models/commentaires');
 
-class SiteTouristiqueService {
+class CommentaireService {
   /**
    * cree un nouveau site
    * @param {Db} db database
-   * @return {SiteTouristique}
+   * @return {Commentaire}
    */
-  static async save(site_touristique) {
+  static async save(commentaire) {
     const mongoConnect = new MongoConnect();
     let mongoClient = undefined;
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('sitetouristique');
-      let result = await collection.insertOne(site_touristique);
-      return site_touristique;
+      let collection = db.collection('Commentaire');
+      let result = await collection.insertOne(commentaire);
+      return commentaire;
     } catch(err) {
       console.error(err);
       throw err;
@@ -35,7 +35,7 @@ class SiteTouristiqueService {
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('sitetouristique');
+      let collection = db.collection('Commentaire');
 
       let query = {
         _id: id
@@ -54,7 +54,7 @@ class SiteTouristiqueService {
 
       /**
    * getall sites
-   * @return {SiteTouristique[]}
+   * @return {Commentaire[]}
    */
     static async findAll() {
         const mongoConnect = new MongoConnect();
@@ -62,7 +62,7 @@ class SiteTouristiqueService {
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('sitetouristique');
+          let collection = db.collection('Commentaire');
           let result = collection.find().toArray();
           return result;
         } catch(err) {
@@ -80,27 +80,24 @@ class SiteTouristiqueService {
     /**
      * met a jour un nouveau site par son id
      * @param {String} id
-     * @return {SiteTouristique}
+     * @return {Commentaire}
      */
-    static async update(id,site) {
+    static async update(id,comment) {
         const mongoConnect = new MongoConnect();
         let mongoClient = undefined;
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('sitetouristique');
-          const filter = { _id: id };
-          // update the value of the 'quantity' field to 5
+          let collection = db.collection('Commentaire');
+          const filter = { _id:id };
           const updateDocument = {
             $set: {
-                nom:site.nom,
-                localisation:site.localisation,
-                description:site.description,
-                types:site.types,
-                categories:site.categories,
-                saisons:site.saisons,
-                recommendations:site.recommendations,
-                etat:site.etat
+              id_user:comment.id_user,
+              id_parent:comment.id_parent,
+              message:comment.message,
+              note:comment.note,
+              date_modification:comment.date_modification,
+              etat:comment.etat
             },
           };
           const result = await collection.updateOne(filter, updateDocument);
@@ -109,7 +106,7 @@ class SiteTouristiqueService {
           console.error(err);
           if(err instanceof MongoError) {
             if(err.code = 11000) {
-              throw new Error('La liste des sites_touristiques est vide');
+              throw new Error('La liste des commentaires est vide');
             }
           }
           throw err;
@@ -117,4 +114,4 @@ class SiteTouristiqueService {
       }
 }
 
-module.exports = SiteTouristiqueService;
+module.exports = CommentaireService;

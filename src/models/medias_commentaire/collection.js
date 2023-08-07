@@ -1,20 +1,17 @@
 const colletion = {
-  name: 'sitefavoris',
+  name: 'medias_commentaire',
   options: {
     validator: {
       $jsonSchema: {
         bsonType: 'object',
-        title: 'Collection SiteFavoris',
-        required: ['id_site_touristique', 'id_user','etat'],
+        title: 'Collection Medias Commentaire',
+        required: ['id_commentaire', 'id_media'],
         properties: {
-          id_site_touristique: {
+          id_commentaire: {
             bsonType: "objectId"
           },
-          id_user: {
+          id_media: {
             bsonType: "objectId"
-          },
-          etat: {
-            bsonType: "int"
           }
         }
       }
