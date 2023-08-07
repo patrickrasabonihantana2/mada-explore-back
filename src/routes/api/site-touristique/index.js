@@ -2,6 +2,27 @@ var express = require('express');
 var router = express.Router();
 const {ObjectId} = require('mongodb');
 const SiteTouristiqueService = require('../../../services/site-touristique-service');
+const { SiteTouristique } = require('../../../models/site_touristique');
+const constant = require('../../../util/constante');
+
+router.post('/', async function(req, res) {
+  body = req.body;
+  try {
+    console.log(req.body.etat);
+    let site=  new SiteTouristique(body.nom,body.localisation,body.description,body.types,body.categories,body.saisons,body.recommendations,constant.etat_creer);
+    let site_touristique = await SiteTouristiqueService.save(site);
+    let data = {
+      site_touristique: site
+    };
+    res.status(200).send(data);
+  } catch(err) {
+    let data = {
+      message: err.message
+    };
+    res.status(400).send(data);
+  }
+});
+
 
 router.get('/', async function(req, res) {
   try {
@@ -10,7 +31,7 @@ router.get('/', async function(req, res) {
     let data = {
       site_touristiques: [site_touristique]
     };
-    res.send(data);
+    res.status(200).send(data);
   } catch(err) {
     console.log(err);
     let data = {};
@@ -30,7 +51,7 @@ router.get('/:id', async function(req, res) {
     let id = new ObjectId(req.params.id);
     let site_touristique = await SiteTouristiqueService.findById(id);
     let data = {
-      site_touristiques: [site_touristique]
+      site_touristique: site_touristique
     };
     res.status(200).send(data);
   } catch(err) {
@@ -51,10 +72,10 @@ router.put('/:id', async function(req, res) {
   try {
     let id = new ObjectId(req.params.id);
     let body=req.body;
-    let site = new site_touristique(body.nom,body.localisation,body.description,body.types,body.categories,body.saisons,body.recommendations,body.etat);
+    let site = new SiteTouristique(body.nom,body.localisation,body.description,body.types,body.categories,body.saisons,body.recommendations,constant.etat_update);
     let site_touristique =await SiteTouristiqueService.update(id,site);
     let data = {
-      site_touristiques: [site_touristique]
+      site_touristique: site
     };
     res.status(200).send(data);
   } catch(err) {

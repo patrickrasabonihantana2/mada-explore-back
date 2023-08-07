@@ -1,7 +1,26 @@
 var express = require('express');
 var router = express.Router();
 const {ObjectId} = require('mongodb');
-const CommentaireService = require('../../../services/commentaire-favoris-service');
+const CommentaireService = require('../../../services/commentaire-service');
+const { Commentaire } = require('../../../models/commentaires');
+const constant = require('../../../util/constante');
+
+router.post('/', async function(req, res) {
+  body = req.body;
+  try {
+    let site=  new Commentaire(body.id_user,body.id_parent,body.message,body.note,body.date_modification,constant.etat_creer);
+    let media= await CommentaireService.save(site);
+    let data = {
+      commentaire: site
+    };
+    res.status(200).send(data);
+  } catch(err) {
+    let data = {
+      message: err.message
+    };
+    res.status(400).send(data);
+  }
+});
 
 router.get('/', async function(req, res) {
   try {
@@ -30,7 +49,7 @@ router.get('/:id', async function(req, res) {
     let id = new ObjectId(req.params.id);
     let commentaire = await CommentaireService.findById(id);
     let data = {
-      commentaire: [commentaire]
+      commentaire: commentaire
     };
     res.status(200).send(data);
   } catch(err) {
@@ -48,12 +67,13 @@ router.get('/:id', async function(req, res) {
 });
 
 router.put('/:id', async function(req, res) {
+  body = req.body;
   try {
     let id = new ObjectId(req.params.id);
-    let comment = new commentaire(req.body.id_commentaire_touristique,req.body.id_user,req.body.etat);
+    let comment = new Commentaire(body.id_user,body.id_parent,body.message,body.note,body.date_modification,constant.etat_update);
     let commentaire =await CommentaireService.update(id,comment);
     let data = {
-      commentaire: [commentaire]
+      commentaire: comment
     };
     res.status(200).send(data);
   } catch(err) {

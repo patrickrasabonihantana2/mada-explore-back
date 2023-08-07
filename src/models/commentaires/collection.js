@@ -5,7 +5,7 @@ const colletion = {
       $jsonSchema: {
         bsonType: 'object',
         title: 'Collection Commentaire',
-        required: ['id_user', 'id_parent', 'message','photo','video','note','date_modification','etat'],
+        required: ['id_user', 'id_parent', 'message','note','date_modification','etat'],
         properties: {
           id_user: {
             bsonType: "objectId"
@@ -15,30 +15,6 @@ const colletion = {
           },
           message: {
             bsonType: "string",
-          },
-          photo: {
-            bsonType: "object",
-            required: ['nom', 'stockage'],
-            properties: {
-              nom: {
-                bsonType: "string"
-              },
-              stockage: {
-                bsonType: "binData"
-              }
-            }
-          },
-          video: {
-            bsonType: "object",
-            required: ['nom', 'stockage'],
-            properties: {
-              nom: {
-                bsonType: "string"
-              },
-              stockage: {
-                bsonType: "binData"
-              }
-            }
           },
           note: {
             bsonType: "int"

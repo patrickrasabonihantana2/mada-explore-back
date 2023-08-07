@@ -9,10 +9,14 @@ class MediasService {
    * @param {Db} db database
    * @return {Medias}
    */
-  async save(media) {
-    let colletion = db.collection('medias');
+  static async save(media) {
+    const mongoConnect = new MongoConnect();
+    let mongoClient = undefined;
     try {
-      let result = await colletion.insertOne(media);
+      mongoClient = await mongoConnect.getConnection();
+      let db = mongoClient.db(Env.MONGO_DB);
+      let collection = db.collection('medias');
+      let result = await collection.insertOne(media);
       return media;
     } catch(err) {
       console.error(err);

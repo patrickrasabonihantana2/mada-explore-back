@@ -1,5 +1,5 @@
 const colletion = {
-  name: 'media',
+  name: 'medias',
   options: {
     validator: {
       $jsonSchema: {

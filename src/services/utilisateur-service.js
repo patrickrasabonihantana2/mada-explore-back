@@ -137,7 +137,7 @@ class UtilisateurService {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
           let collection = db.collection('utilisateurs');
-          const filter = { _id:new mongodb.ObjectId(id) };
+          const filter = { _id: id };
           // update the value of the 'quantity' field to 5
           const updateDocument = {
             $set: {

@@ -9,12 +9,15 @@ class SiteTouristiqueService {
    * @param {Db} db database
    * @return {SiteTouristique}
    */
-  async save(site_touristique) {
-    let colletion = db.collection('sitetouristique');
+  static async save(site_touristique) {
+    const mongoConnect = new MongoConnect();
+    let mongoClient = undefined;
     try {
-      // await site.login.hashMdp();
-      let result = await colletion.insertOne(site_touristique);
-      return site;
+      mongoClient = await mongoConnect.getConnection();
+      let db = mongoClient.db(Env.MONGO_DB);
+      let collection = db.collection('sitetouristique');
+      let result = await collection.insertOne(site_touristique);
+      return site_touristique;
     } catch(err) {
       console.error(err);
       throw err;
@@ -86,7 +89,7 @@ class SiteTouristiqueService {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
           let collection = db.collection('sitetouristique');
-          const filter = { _id:new mongodb.ObjectId(id) };
+          const filter = { _id: id };
           // update the value of the 'quantity' field to 5
           const updateDocument = {
             $set: {

@@ -5,8 +5,6 @@ class Commentaire {
     this.id_user = user_id;
     this.id_parent = parent_id;
     this.message = message;
-    this.photo = undefined;
-    this.video=undefined;
     this.note = note;
     this.date_modification = date_modif;
     this.etat = etat;

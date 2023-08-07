@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const MongoConnect = require('../dao/MongoConnect');
 const Env = require('../util/env');
-const {Commentaire} = require('../models/site_touristique');
+const {Commentaire} = require('../models/commentaires');
 
 class CommentaireService {
   /**
@@ -9,12 +9,15 @@ class CommentaireService {
    * @param {Db} db database
    * @return {Commentaire}
    */
-  async save(site_touristique) {
-    let colletion = db.collection('Commentaire');
+  static async save(commentaire) {
+    const mongoConnect = new MongoConnect();
+    let mongoClient = undefined;
     try {
-      // await site.login.hashMdp();
-      let result = await colletion.insertOne(site_touristique);
-      return site;
+      mongoClient = await mongoConnect.getConnection();
+      let db = mongoClient.db(Env.MONGO_DB);
+      let collection = db.collection('Commentaire');
+      let result = await collection.insertOne(commentaire);
+      return commentaire;
     } catch(err) {
       console.error(err);
       throw err;
@@ -86,7 +89,7 @@ class CommentaireService {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
           let collection = db.collection('Commentaire');
-          const filter = { _id:new mongodb.ObjectId(id) };
+          const filter = { _id:id };
           const updateDocument = {
             $set: {
               id_user:comment.id_user,
@@ -103,7 +106,7 @@ class CommentaireService {
           console.error(err);
           if(err instanceof MongoError) {
             if(err.code = 11000) {
-              throw new Error('La liste des sites_touristiques est vide');
+              throw new Error('La liste des commentaires est vide');
             }
           }
           throw err;

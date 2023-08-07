@@ -9,11 +9,15 @@ class SiteFavorisService {
    * @param {Db} db database
    * @return {SiteFavoris}
    */
-  async save(site_favoris) {
-    let colletion = db.collection('siteFavoris');
+  static async save(site_favoris) {
+    const mongoConnect = new MongoConnect();
+    let mongoClient = undefined;
     try {
-      let result = await colletion.insertOne(site_favoris);
-      return site;
+      mongoClient = await mongoConnect.getConnection();
+      let db = mongoClient.db(Env.MONGO_DB);
+      let collection = db.collection('siteFavoris');
+      let result = await collection.insertOne(site_favoris);
+      return site_favoris;
     } catch(err) {
       console.error(err);
       throw err;
@@ -85,7 +89,7 @@ class SiteFavorisService {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
           let collection = db.collection('siteFavoris');
-          const filter = { _id:new mongodb.ObjectId(id) };
+          const filter = { _id:id };
           const updateDocument = {
             $set: {
                 id_site_touristique:site.id_site_touristique,
