@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {ObjectId} = require('mongodb');
-const MediasCommentaireService = require('../../../../services/medias-user-service');
+const MediasCommentaireService = require('../../../../services/medias-commentaire-service');
 const { MediasCommentaire } = require('../../../../models/medias_commentaire');
 
 

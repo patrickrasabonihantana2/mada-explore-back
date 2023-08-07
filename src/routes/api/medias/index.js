@@ -12,6 +12,8 @@ const baseUrl = "http://localhost:3000/api/medias/files/";
 const mongoClient = new MongoClient(url);
 
 const siteRouter=require('./site');
+const userRouter=require('./user');
+const commentaireRouter=require('./commentaire');
 
 router.post('/upload', async (req, res) => {
   try {
@@ -96,5 +98,8 @@ router.get('/files/:name',async (req, res) => {
   }
 });
 
+
 router.use('/site', siteRouter);
+router.use('/user', userRouter);
+router.use('/commentaire', commentaireRouter);
 module.exports = router;

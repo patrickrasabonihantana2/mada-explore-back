@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {ObjectId} = require('mongodb');
-const MediasUtilisateurService = require('../../../../services/medias-user-service');
+const MediasUtilisateurService = require('../../../../services/medias-user-service ');
 const { MediasUtilisateur } = require('../../../../models/medias_utilisateur');
 
 
