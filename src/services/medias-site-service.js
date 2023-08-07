@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 const MongoConnect = require('../dao/MongoConnect');
 const Env = require('../util/env');
-const {Medias} = require('../models/site_favoris');
+const {MediasSite} = require('../models/medias_site');
 
-class MediasService {
+class MediasSiteService {
   /**
    * cree un nouveau site favoris
    * @param {Db} db database
-   * @return {Medias}
+   * @return {MediasSite}
    */
   static async save(media) {
     const mongoConnect = new MongoConnect();
@@ -15,7 +15,7 @@ class MediasService {
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('medias');
+      let collection = db.collection('medias_site');
       let result = await collection.insertOne(media);
       return media;
     } catch(err) {
@@ -35,7 +35,7 @@ class MediasService {
     try {
       mongoClient = await mongoConnect.getConnection();
       let db = mongoClient.db(Env.MONGO_DB);
-      let collection = db.collection('medias');
+      let collection = db.collection('medias_site');
 
       let query = {
         _id: id
@@ -54,7 +54,7 @@ class MediasService {
 
       /**
    * getall mediass
-   * @return {Medias[]}
+   * @return {MediasSite[]}
    */
     static async findAll() {
         const mongoConnect = new MongoConnect();
@@ -62,14 +62,14 @@ class MediasService {
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('medias');
+          let collection = db.collection('medias_site');
           let result = collection.find().toArray();
           return result;
         } catch(err) {
           console.error(err);
           if(err instanceof MongoError) {
             if(err.code = 11000) {
-              throw new Error('La liste des medias est vide');
+              throw new Error('La liste des medias_site est vide');
             }
           }
           throw err;
@@ -80,7 +80,7 @@ class MediasService {
     /**
      * met a jour un nouveau medias par son id
      * @param {String} id
-     * @return {Medias}
+     * @return {MediasSite}
      */
     static async update(id,medias) {
         const mongoConnect = new MongoConnect();
@@ -88,7 +88,7 @@ class MediasService {
         try {
           mongoClient = await mongoConnect.getConnection();
           let db = mongoClient.db(Env.MONGO_DB);
-          let collection = db.collection('medias');
+          let collection = db.collection('medias_site');
           const filter = { _id:new mongodb.ObjectId(id) };
           const updateDocument = {
             $set: {
@@ -110,4 +110,4 @@ class MediasService {
       }
 }
 
-module.exports = MediasService;
+module.exports = MediasSiteService;

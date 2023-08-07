@@ -2,11 +2,8 @@ var express = require('express');
 var router = express.Router();
 const upload = require("../../../middlewares/upload");
 const dbConfig = require("../../../config/db");
-const {ObjectId} = require('mongodb');
-const MediasService = require('../../../services/site-favoris-service');
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
-const { Medias } = require('../../../models/medias');
 
 const url = dbConfig.url;
 
@@ -14,23 +11,7 @@ const baseUrl = "http://localhost:3000/api/medias/files/";
 
 const mongoClient = new MongoClient(url);
 
-router.post('/', async function(req, res) {
-  body = req.body;
-  try {
-    console.log(req.body.id_site_touristique);
-    let site=  new Medias(body.id_site_touristique,body.id_media);
-    let media= await MediasService.save(site);
-    let data = {
-      medias: site
-    };
-    res.status(200).send(data);
-  } catch(err) {
-    let data = {
-      message: err.message
-    };
-    res.status(400).send(data);
-  }
-});
+const siteRouter=require('./site');
 
 router.post('/upload', async (req, res) => {
   try {
@@ -52,28 +33,6 @@ router.post('/upload', async (req, res) => {
     return res.send({
       message: "Error when trying upload image: ${error}",
     });
-  }
-});
-
-router.get('/', async function(req, res) {
-  try {
-    let id = new ObjectId(req.params.id);
-    let medias = await MediasService.findAll();
-    let data = {
-      medias: [medias]
-    };
-    res.send(data);
-  } catch(err) {
-    console.log(err);
-    let data = {};
-    if(err instanceof BSONTypeError) {
-      if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'medias inexistant';
-      }
-    } else {
-      data.message = err.message;
-    }
-    res.status(400).send(data);
   }
 });
 
@@ -137,52 +96,5 @@ router.get('/files/:name',async (req, res) => {
   }
 });
 
-router.get('/:id', async function(req, res) {
-  try {
-    let id = new ObjectId(req.params.id);
-    let medias = await MediasService.findById(id);
-    let data = {
-      medias: medias
-    };
-    res.status(200).send(data);
-  } catch(err) {
-    console.log(err);
-    let data = {};
-    if(err instanceof BSONTypeError) {
-      if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'medias inexistant';
-      }
-    } else {
-      data.message = err.message;
-    }
-    res.status(400).send(data);
-  }
-});
-
-router.put('/:id', async function(req, res) {
-  try {
-    let id = new ObjectId(req.params.id);
-    let site = new Medias(req.body.id_site_touristique,req.body.id_media);
-    let medias =await MediasService.update(id,site);
-    let data = {
-      medias: site
-    };
-    res.status(200).send(data);
-  } catch(err) {
-    console.log(err);
-    let data = {};
-    if(err instanceof BSONTypeError) {
-      if(err.code == 'ERR_HTTP_HEADERS_SENT') {
-        data.message = 'medias inexistant';
-      }
-    } else {
-      data.message = err.message;
-    }
-    res.status(400).send(data);
-  }
-
-
-});
-
-
+router.use('/site', siteRouter);
 module.exports = router;

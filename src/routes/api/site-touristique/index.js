@@ -92,4 +92,27 @@ router.put('/:id', async function(req, res) {
   }
 });
 
+router.delete('/:id', async function(req, res) {
+  try {
+    let id = new ObjectId(req.params.id);
+    let body=req.body;
+    let site = new SiteTouristique(body.nom,body.localisation,body.description,body.types,body.categories,body.saisons,body.recommendations,constant.etat_supprimer);
+    let site_touristique =await SiteTouristiqueService.update(id,site);
+    let data = {
+      "message": " 1 élément supprimé"
+    };
+    res.status(200).send(data);
+  } catch(err) {
+    console.log(err);
+    let data = {};
+    if(err instanceof BSONTypeError) {
+      if(err.code == 'ERR_HTTP_HEADERS_SENT') {
+        data.message = 'site_touristique inexistant';
+      }
+    } else {
+      data.message = err.message;
+    }
+    res.status(400).send(data);
+  }
+});
 module.exports = router;
