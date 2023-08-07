@@ -5,7 +5,7 @@ const env = dotenv.config();
 dotenvExpand.expand(env);
 
 const Env = {
-    MONGO_URL: process.env.MONGO_URL || 'mongodb+srv://admin:admin1234@cluster0.wh5l9hf.mongodb.net//',
+    MONGO_URL: process.env.MONGO_URL || 'mongodb+srv://root:root@cluster0.lgknzgc.mongodb.net//',
     MONGO_DB: process.env.MONGO_DB || 'site',
     SECURITY_CORS_ALLOW_ORIGIN: process.env.SECURITY_CORS_ALLOW_ORIGIN || "",
     SECURITY_CORS_ALLOW_METHODS: process.env.SECURITY_CORS_ALLOW_METHODS || "",

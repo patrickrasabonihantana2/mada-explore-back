@@ -1,5 +1,5 @@
 module.exports = {
-    url: "mongodb+srv://admin:admin1234@cluster0.wh5l9hf.mongodb.net/",
+    url: "mongodb+srv://root:root@cluster0.lgknzgc.mongodb.net/",
     database: "site",
     imgBucket: "medias",
   };
